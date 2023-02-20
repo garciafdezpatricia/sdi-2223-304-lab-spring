@@ -1,5 +1,6 @@
 package com.uniovi.sdi2223304spring1.controllers;
 
+import com.uniovi.sdi2223304spring1.entities.Mark;
 import com.uniovi.sdi2223304spring1.entities.Professor;
 import com.uniovi.sdi2223304spring1.services.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,18 @@ public class ProfessorController {
     public String getList(Model model){
         model.addAttribute("professorList", professorService.getProfessors());
         return "professor/list";
+    }
+
+    @RequestMapping(value = "/professor/edit/{dni}")
+    public String getEdit(Model model, @PathVariable String dni) {
+        model.addAttribute("professor", professorService.getProfessor(dni));
+        return "professor/edit";
+    }
+
+    @RequestMapping(value="/professor/edit/{dni}", method=RequestMethod.POST)
+    public String setEdit(@ModelAttribute Professor professor, @PathVariable String dni){
+        professor.setDni(dni);
+        professorService.addProfessor(professor);
+        return "redirect:/professor/details/"+dni;
     }
 }

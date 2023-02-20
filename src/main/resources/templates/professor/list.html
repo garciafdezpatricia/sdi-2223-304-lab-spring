@@ -78,6 +78,7 @@
         <th scope="col">Categoría</th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
       </thead>
       <tbody>
@@ -87,6 +88,7 @@
         <td th:text="${professor.surname}">Garcia</td>
         <td th:text="${professor.category}">Lengua</td>
         <td><a th:href="${'/professor/details/' + professor.dni}">detalles</a></td>
+        <td><a th:href="${'/professor/edit/' + professor.dni}">modificar</a></td>
         <td><a th:href="${'/professor/delete/' + professor.dni}">eliminar</a></td>
       </tr>
       </tbody>
