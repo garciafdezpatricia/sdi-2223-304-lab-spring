@@ -16,7 +16,7 @@ public class ProfessorController {
     @RequestMapping(value="/professor/add", method= RequestMethod.POST)
     public String setProfessor(@ModelAttribute Professor professor) {
         professorService.addProfessor(professor);
-        return "professor/add";
+        return "redirect:/professor/list";
     }
 
     @RequestMapping(value = "/professor/add")
@@ -26,7 +26,7 @@ public class ProfessorController {
 
     @RequestMapping("/professor/details/{dni}")
     public String getDetail(Model model, @PathVariable String dni) {
-        model.addAttribute("professor", professorService.getProfessorByDni(dni));
+        model.addAttribute("professor", professorService.getProfessor(dni));
         return "professor/details";
     }
 

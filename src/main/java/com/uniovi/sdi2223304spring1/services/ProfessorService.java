@@ -1,32 +1,31 @@
 package com.uniovi.sdi2223304spring1.services;
 
 import com.uniovi.sdi2223304spring1.entities.Professor;
+import com.uniovi.sdi2223304spring1.repositories.ProfessorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
 public class ProfessorService {
 
-    private List<Professor> professorList = new LinkedList<Professor>();
-    @PostConstruct
-    public void init() {
-        professorList.add(new Professor("Ramon", "Garcia", "774455", "Lengua"));
-        professorList.add(new Professor("Maria", "Sanchez", "445566", "Ingles"));
-    }
+    @Autowired
+    private ProfessorRepository professorRepository;
+
     public List<Professor> getProfessors() {
-        return professorList;
+        List<Professor> professor = new ArrayList<Professor>();
+        professorRepository.findAll().forEach(professor::add);
+        return professor;
     }
-    public Professor getProfessorByDni(String dni) {
-        return professorList.stream()
-                .filter(prof -> prof.getDni().equals(dni)).findFirst().get();
+    public Professor getProfessor(String dni) {
+        return professorRepository.findById(dni).get();
     }
     public void addProfessor(Professor prof) {
-        professorList.add(prof);
+        professorRepository.save(prof);
     }
     public void deleteProfessor(String dni) {
-        professorList.removeIf(prof -> prof.getDni().equals(dni));
+        professorRepository.deleteById(dni);
     }
 
 }
