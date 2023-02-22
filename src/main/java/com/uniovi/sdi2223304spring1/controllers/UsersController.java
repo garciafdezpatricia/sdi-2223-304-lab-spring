@@ -1,6 +1,8 @@
 package com.uniovi.sdi2223304spring1.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import com.uniovi.sdi2223304spring1.services.*;
 import com.uniovi.sdi2223304spring1.entities.*;
@@ -15,6 +17,29 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private SecurityService securityService;
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public String signup(@ModelAttribute("user") User user, Model model) {
+        usersService.addUser(user);
+        securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
+        return "redirect:home";
+    }
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return "login";
+    }
+    @RequestMapping(value = { "/home" }, method = RequestMethod.GET)
+    public String home(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String dni = auth.getName(); //en este caso el username es el dni
+        User activeUser = usersService.getUserByDni(dni);
+        model.addAttribute("markList", activeUser.getMarks());
+        return "home";
+    }
+
     @RequestMapping("/user/list")
     public String getListado(Model model) {
         model.addAttribute("usersList", usersService.getUsers());
