@@ -3,13 +3,17 @@
 <head th:replace="fragments/head"></head>
 <body>
 <nav th:replace="fragments/nav"></nav>
-
-
 <div class="container" id="main-container">
   <h2>Notas</h2>
   <p>Las notas que actualmente figuran en el sistema son las siguientes:</p>
+  <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+  <script> // cuando el usuario clique en el elemento que tenga como id 'updatebutton' se ejecuta function()
+    $("#updateButton").click(function(){ //llama a load que carga en el componenete con id tableMarks la URL que se le pasa.
+      $("#tableMarks").load('/mark/list/update');
+    });
+  </script>
   <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover" th:fragment="tableMarks" id="tableMarks"> <!-- decimos que esta tabla es un fragmento -->
       <thead>
       <tr>
         <th scope="col">id</th>
