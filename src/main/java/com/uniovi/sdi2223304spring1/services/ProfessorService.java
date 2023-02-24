@@ -1,6 +1,7 @@
 package com.uniovi.sdi2223304spring1.services;
 
 import com.uniovi.sdi2223304spring1.entities.Professor;
+import com.uniovi.sdi2223304spring1.entities.User;
 import com.uniovi.sdi2223304spring1.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class ProfessorService {
     }
     public void addProfessor(Professor prof) {
         professorRepository.save(prof);
+    }
+
+    public Professor getProfessorByDni(String dni){
+        return professorRepository.findByDni(dni);
     }
     public void deleteProfessor(String dni) {
         professorRepository.deleteById(dni);
