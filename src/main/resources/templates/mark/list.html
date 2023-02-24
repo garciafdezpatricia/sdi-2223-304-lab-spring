@@ -4,9 +4,9 @@
 <body>
 <nav th:replace="fragments/nav"></nav>
 <div class="container" id="main-container">
-  <h2>Notas</h2>
-  <p>Las notas que actualmente figuran en el sistema son las siguientes:</p>
-  <button type="button" id="updateButton" class="btn btn-primary">Actualizar</button>
+  <h2 th:text="#{markHeader.message}"></h2>
+  <p th:text="#{markInfo.message}"></p>
+  <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
   <script> // cuando el usuario clique en el elemento que tenga como id 'updatebutton' se ejecuta function()
     $("#updateButton").click(function(){ //llama a load que carga en el componenete con id tableMarks la URL que se le pasa.
       $("#tableMarks").load('/mark/list/update');
@@ -16,9 +16,9 @@
     <table class="table table-hover" th:fragment="tableMarks" id="tableMarks"> <!-- decimos que esta tabla es un fragmento -->
       <thead>
       <tr>
-        <th scope="col">id</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Puntuación</th>
+        <th scope="col" th:text="#{id.message}"></th>
+        <th scope="col" th:text="#{description.message}"></th>
+        <th scope="col" th:text="#{score.message}"></th>
         <th scope="col"></th>
         <th scope="col"></th>
         <th scope="col"></th>
@@ -29,14 +29,14 @@
         <td scope="row" th:text="${mark.id}"> 1</td>
         <td th:text="${mark.description}"> Ejercicio 1</td>
         <td th:text="${mark.score}">10</td>
-        <td><a th:href="${'/mark/details/' + mark.id}">detalles</a></td>
-        <td><a th:href="${'/mark/edit/' + mark.id}">modificar</a></td>
-        <td><a th:href="${'/mark/delete/' + mark.id}">eliminar</a></td>
+        <td><a th:href="${'/mark/details/' + mark.id}" th:text="#{details.message}"></a></td>
+        <td><a th:href="${'/mark/edit/' + mark.id}" th:text="#{edit.message}"></a></td>
+        <td><a th:href="${'/mark/delete/' + mark.id}" th:text="#{delete.message}"></a></td>
       </tr>
       </tbody>
     </table>
   </div>
-  <div th:if="${#lists.isEmpty(markList)}"> No marks </div>
+  <div th:if="${#lists.isEmpty(markList)}" th:text="#{noMarks.message}"></div>
 </div>
 <footer th:replace="fragments/footer"></footer>
 </body>
