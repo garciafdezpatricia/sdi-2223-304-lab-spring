@@ -2,6 +2,7 @@ package com.uniovi.sdi2223304spring1.controllers;
 
 import com.uniovi.sdi2223304spring1.entities.Mark;
 import com.uniovi.sdi2223304spring1.entities.Professor;
+import com.uniovi.sdi2223304spring1.services.DepartmentService;
 import com.uniovi.sdi2223304spring1.services.ProfessorService;
 import com.uniovi.sdi2223304spring1.validators.NewProfessorFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,19 @@ public class ProfessorController {
 
     @Autowired
     private ProfessorService professorService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Autowired
     private NewProfessorFormValidator newProfessorFormValidator;
 
     @RequestMapping(value="/professor/add", method= RequestMethod.POST)
-    public String setProfessor(@Validated Professor professor, BindingResult result) {
+    public String setProfessor(@ModelAttribute @Validated Professor professor, BindingResult result, Model model) {
         newProfessorFormValidator.validate(professor,result);
-        if (result.hasErrors())
+        if (result.hasErrors()){
+            model.addAttribute("departmentList", departmentService.getDepartments());
             return "professor/add";
+        }
         professorService.addProfessor(professor);
         return "redirect:/professor/list";
     }
@@ -32,12 +37,14 @@ public class ProfessorController {
     @RequestMapping(value = "/professor/add")
     public String getProfessor(Model model) {
         model.addAttribute("professor", new Professor());
+        model.addAttribute("departmentList", departmentService.getDepartments());
         return "professor/add";
     }
 
     @RequestMapping("/professor/details/{dni}")
     public String getDetail(Model model, @PathVariable String dni) {
         model.addAttribute("professor", professorService.getProfessor(dni));
+        model.addAttribute("department", professorService.getProfessor(dni).getDepartment());
         return "professor/details";
     }
 

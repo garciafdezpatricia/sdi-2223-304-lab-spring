@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+<div class="container" id="main-container">
+  <h2 th:text="#{departmentHeader.message}"></h2>
+  <p th:text="#{departmentInfo.message}"></p>
+  <button type="button" id="updateButton" class="btn btn-primary" th:text="#{update.message}"></button>
+  <script> // cuando el usuario clique en el elemento que tenga como id 'updatebutton' se ejecuta function()
+    $("#updateButton").click(function(){ //llama a load que carga en el componenete con id tableMarks la URL que se le pasa.
+      $("#tableDepartment").load('/department/list/update');
+    });
+  </script>
+  <div class="table-responsive">
+    <table class="table table-hover" th:fragment="tableDepartment" id="tableDepartment"> <!-- decimos que esta tabla es un fragmento -->
+      <thead>
+      <tr>
+        <th scope="col" th:text="#{id.message}"></th>
+        <th scope="col" th:text="#{description.message}"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="department : ${departmentList}">
+        <td scope="row" th:text="${department.id}"> 1</td>
+        <td th:text="${department.description}"> Ejercicio 1</td>
+        <td><a th:href="${'/department/details/' + department.id}" th:text="#{details.message}"></a></td>
+        <td><a th:href="${'/department/edit/' + department.id}" th:text="#{edit.message}"></a></td>
+        <td><a th:href="${'/department/delete/' + department.id}" th:text="#{delete.message}"></a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:if="${#lists.isEmpty(departmentList)}" th:text="#{noDepartment.message}"></div>
+</div>
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

@@ -12,6 +12,10 @@ public class InsertSampleDataService {
 
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private DepartmentService departmentService;
+    @Autowired
+    private ProfessorService professorService;
     @PostConstruct
     public void init() {
         User user1 = new User("99999990A", "Pedro", "Díaz");
@@ -67,5 +71,6 @@ public class InsertSampleDataService {
         usersService.addUser(user4);
         usersService.addUser(user5);
         usersService.addUser(user6);
+
     }
 }

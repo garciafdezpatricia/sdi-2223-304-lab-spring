@@ -1,14 +1,16 @@
 package com.uniovi.sdi2223304spring1.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Professor {
 
     private String name;
     private String surname;
+
+    @ManyToOne
+    @JoinColumn(name ="department_id")
+    private Department department;
 
     @Id
     private String dni;
@@ -18,11 +20,20 @@ public class Professor {
 
     }
 
-    public Professor(String name, String surname, String dni, String category) {
+    public Professor(String name, String surname, String dni, String category, Department department) {
         this.name = name;
         this.surname = surname;
         this.dni = dni;
         this.category = category;
+        this.department = department;
+    }
+
+    public void setDepartment(Department department){
+        this.department = department;
+    }
+
+    public Department getDepartment(){
+        return this.department;
     }
 
     public String getName() {
