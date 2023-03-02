@@ -3,6 +3,7 @@ package com.uniovi.sdi2223304spring1.entities;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Mark {
@@ -65,4 +66,13 @@ public class Mark {
     public User getUser(){ return user; }
 
     public void setUser(User user) { this.user = user; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mark mark = (Mark) o;
+        return Objects.equals(id, mark.id); // dos notas son iguales si tienen la misma id
+    }
+
 }
