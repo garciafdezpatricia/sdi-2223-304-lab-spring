@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UsersController {
 
     @Autowired
+    private RolesService rolesService;
+    @Autowired
     private UsersService usersService;
     @Autowired
     private SecurityService securityService;
@@ -31,7 +33,7 @@ public class UsersController {
         if (result.hasErrors()){
             return "signup";
         }
-
+        user.setRole(rolesService.getRoles()[0]);
         usersService.addUser(user);
         securityService.autoLogin(user.getDni(), user.getPasswordConfirm());
         return "redirect:home";
@@ -64,7 +66,8 @@ public class UsersController {
     }
     @RequestMapping(value = "/user/add")
     public String getUser(Model model) {
-        model.addAttribute("usersList", usersService.getUsers());
+        model.addAttribute("rolesList", rolesService.getRoles());
+        //model.addAttribute("usersList", usersService.getUsers());
         return "user/add";
     }
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
