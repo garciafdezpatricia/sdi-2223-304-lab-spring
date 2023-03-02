@@ -2,6 +2,7 @@ package com.uniovi.sdi2223304spring1.services;
 import com.uniovi.sdi2223304spring1.entities.Mark;
 import java.util.*;
 
+import com.uniovi.sdi2223304spring1.entities.User;
 import com.uniovi.sdi2223304spring1.repositories.MarksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,15 @@ public class MarksService {
             marksRepository.updateResend(revised, id);
         }
 
+    }
+
+    public List<Mark> getMarksForUser(User user) {
+        List<Mark> marks = new ArrayList<>();
+        if (user.getRole().equals("ROLE_STUDENT")) {
+            marks = marksRepository.findAllByUser(user);}
+        if (user.getRole().equals("ROLE_PROFESSOR")) {
+            marks = getMarks(); }
+        return marks;
     }
 
 }

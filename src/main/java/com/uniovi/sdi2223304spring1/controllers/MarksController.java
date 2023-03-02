@@ -1,6 +1,7 @@
 package com.uniovi.sdi2223304spring1.controllers;
 
 import com.uniovi.sdi2223304spring1.entities.Mark;
+import com.uniovi.sdi2223304spring1.entities.User;
 import com.uniovi.sdi2223304spring1.services.MarksService;
 import com.uniovi.sdi2223304spring1.services.UsersService;
 import com.uniovi.sdi2223304spring1.validators.NewMarkFormValidator;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.*;
 
 import javax.servlet.http.HttpSession;
@@ -30,8 +33,10 @@ public class MarksController {
     private NewMarkFormValidator newMarkFormValidator;
 
     @RequestMapping("/mark/list")
-    public String getList(Model model) {
-        model.addAttribute("markList", marksService.getMarks());
+    public String getList(Model model, Principal principal){
+        String dni = principal.getName(); // DNI es el name de la autenticación
+        User user = usersService.getUserByDni(dni);
+        model.addAttribute("markList", marksService.getMarksForUser(user) );
         return "mark/list";
     }
 
@@ -84,9 +89,11 @@ public class MarksController {
     }
 
     @RequestMapping("/mark/list/update")
-    public String updateList(Model model){
-        model.addAttribute("markList", marksService.getMarks());
-        return "mark/list::tableMarks"; // solo retorna el fragmento tableMarks
+    public String updateList(Model model, Principal principal) {
+        String dni = principal.getName(); // DNI es el name de la autenticación
+        User user = usersService.getUserByDni(dni);
+        model.addAttribute("markList", marksService.getMarksForUser(user));
+        return "mark/list :: tableMarks";
     }
 
     @RequestMapping(value = "/mark/{id}/resend", method = RequestMethod.GET)
