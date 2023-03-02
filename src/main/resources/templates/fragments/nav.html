@@ -1,5 +1,6 @@
 <!-- nav.html -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-
+springsecurity4">
   <a class="navbar-brand" href="#"></a>
   <img src="/images/student-48.png" alt="logo"/>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar"
@@ -7,7 +8,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="myNavbar">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto" sec:authorize="isAuthenticated()">
       <li class="nav-item ">
         <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span></a>
       </li>
@@ -20,13 +21,13 @@
           <a class="dropdown-item" href="/mark/list">
             <span th:text="#{seeMark.message}"></span>
           </a>
-          <a class="dropdown-item" href="/mark/add">
+          <a class="dropdown-item" href="/mark/add" sec:authorize="hasRole('ROLE_PROFESSOR')">
             <span th:text="#{addMark.message}"></span>
           </a>
         </div>
       </li>
 
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
           <span th:text="#{userManagement.message}"></span>
@@ -41,7 +42,7 @@
         </div>
 
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
         <a class="nav-link dropdown-toggle" href="#" id="profesorDropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
           <span th:text="#{profManagement.message}"></span>
@@ -90,15 +91,22 @@
           </a>
         </div>
       </li>
-      <li class="nav-item">
+      <li sec:authorize="!isAuthenticated()" class="nav-item">
         <a class="nav-link" href="/signup">
           <i class='fas fa-user-alt' style='font-size:16px'></i>
           <span th:text="#{signup.message}"></span></a>
       </li>
-      <li class="nav-item"><a class="nav-link" href="/login">
+      <li  sec:authorize="!isAuthenticated()" class="nav-item">
+        <a class="nav-link" href="/login">
         <i class='fas fa-sign-in-alt' style='font-size:16px'></i>
         <span th:text="#{login.message}"></span>
       </a>
+      </li>
+      <li sec:authorize="isAuthenticated()" class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
+          <span>Desconectar</span>
+        </a>
       </li>
     </ul>
     <!--<form class="form-inline">
