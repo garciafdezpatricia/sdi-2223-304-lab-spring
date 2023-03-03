@@ -3,6 +3,7 @@ package com.uniovi.sdi2223304spring1.services;
 import com.uniovi.sdi2223304spring1.entities.User;
 import com.uniovi.sdi2223304spring1.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

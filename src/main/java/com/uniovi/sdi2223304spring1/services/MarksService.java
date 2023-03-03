@@ -29,7 +29,7 @@ public class MarksService {
     }
 
     public Page<Mark> getMarks(Pageable pageable) {
-        Page<Mark> marks = new PageImpl<Mark>(new ArrayList<Mark>());
+        Page<Mark> marks = marksRepository.findAll(pageable);
         return marks;
     }
     public Mark getMark(Long id) {

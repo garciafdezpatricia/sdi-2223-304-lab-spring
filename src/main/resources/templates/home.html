@@ -11,30 +11,8 @@
         <b th:inline="text" sec:authentication="principal.username"></b>
     </p>
     <p th:text="#{marks.message}"></p>
-    <div class="table-responsive">
-        <table class="table table-hover" th:fragment="tableMarks" id="tableMarks">
-            <thead>
-            <tr>
-                <th scope="col" th:text="#{id.message}"></th>
-                <th scope="col" th:text="#{description.message}"></th>
-                <th scope="col" th:text="#{score.message}"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="mark : ${markList}">
-                <td th:text="${mark.id}"> 1</td>
-                <td th:text="${mark.description}"> Ejercicio 1</td>
-                <td th:text="${mark.score}">10</td>
-                <td><a th:href="${'/mark/details/' + mark.id}" th:text="#{details.message}"></a></td>
-                <td><a th:href="${'/mark/edit/' + mark.id}" th:text="#{edit.message}"></a></td>
-                <td><a th:href="${'/mark/delete/' + mark.id}" th:text="#{delete.message}"></a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <div th:replace="fragments/tableMarks"></div>
+    <footer th:replace="fragments/pagination"/>
 </div>
 <footer th:replace="fragments/footer"/>
 </body>

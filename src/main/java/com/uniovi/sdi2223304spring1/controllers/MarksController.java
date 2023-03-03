@@ -40,6 +40,7 @@ public class MarksController {
                           @RequestParam(value="", required=false) String searchText){
         String dni = principal.getName(); // DNI es el name de la autenticación
         User user = usersService.getUserByDni(dni);
+
         Page<Mark> marks = new PageImpl<Mark>(new ArrayList<Mark>());
         if (searchText != null && !searchText.isEmpty()) {
             marks = marksService.searchMarksByDescriptionAndNameForUser(pageable, searchText, user);
@@ -100,23 +101,23 @@ public class MarksController {
     }
 
     @RequestMapping("/mark/list/update")
-    public String updateList(Model model, Pageable pageable, Principal principal) {
+    public String updateList(Model model, Principal principal, Pageable pageable) {
         String dni = principal.getName(); // DNI es el name de la autenticación
         User user = usersService.getUserByDni(dni);
         Page<Mark> marks = marksService.getMarksForUser(pageable, user);
         model.addAttribute("markList", marks.getContent());
-        return "mark/list :: tableMarks";
+        return "fragments/tableMarks :: tableMarks";
     }
 
     @RequestMapping(value = "/mark/{id}/resend", method = RequestMethod.GET)
-    public String setResendTrue(@PathVariable Long id) {
+    public String setResendTrue(@PathVariable Long id, Pageable pageable) {
         marksService.setMarkResend(true, id);
-        return "redirect:/mark/list";
+        return "fragments/tableMarks :: tableMarks";
     }
     @RequestMapping(value = "/mark/{id}/noresend", method = RequestMethod.GET)
-    public String setResendFalse(@PathVariable Long id) {
+    public String setResendFalse(@PathVariable Long id, Pageable pageable) {
         marksService.setMarkResend(false, id);
-        return "redirect:/mark/list";
+        return "fragments/tableMarks :: tableMarks";
     }
 
 }

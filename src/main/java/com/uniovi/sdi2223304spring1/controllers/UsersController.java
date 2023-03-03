@@ -1,7 +1,11 @@
 package com.uniovi.sdi2223304spring1.controllers;
 
+import com.uniovi.sdi2223304spring1.repositories.MarksRepository;
 import com.uniovi.sdi2223304spring1.validators.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,13 +14,16 @@ import com.uniovi.sdi2223304spring1.entities.*;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.ArrayList;
 
 @Controller
 public class UsersController {
+
+    @Autowired
+    private MarksService marksService;
 
     @Autowired
     private RolesService rolesService;
@@ -51,11 +58,18 @@ public class UsersController {
         return "login";
     }
     @RequestMapping(value = { "/home" }, method = RequestMethod.GET)
-    public String home(Model model) {
+    public String home(Model model, Pageable pageable, @RequestParam(value="", required=false) String searchText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String dni = auth.getName(); //en este caso el username es el dni
         User activeUser = usersService.getUserByDni(dni);
-        model.addAttribute("markList", activeUser.getMarks());
+        Page<Mark> marks = new PageImpl<Mark>(new ArrayList<Mark>());
+        if (searchText != null && !searchText.isEmpty()) {
+            marks = marksService.searchMarksByDescriptionAndNameForUser(pageable, searchText, activeUser);
+        } else {
+            marks = marksService.getMarksForUser(pageable, activeUser);
+        }
+        model.addAttribute("markList", marks.getContent());
+        model.addAttribute("page", marks);
         return "home";
     }
 

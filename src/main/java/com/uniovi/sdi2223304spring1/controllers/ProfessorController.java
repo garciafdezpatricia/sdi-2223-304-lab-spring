@@ -1,5 +1,6 @@
 package com.uniovi.sdi2223304spring1.controllers;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.uniovi.sdi2223304spring1.entities.Mark;
 import com.uniovi.sdi2223304spring1.entities.Professor;
 import com.uniovi.sdi2223304spring1.services.DepartmentService;
