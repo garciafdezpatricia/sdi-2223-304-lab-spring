@@ -1,4 +1,6 @@
 package com.uniovi.sdi2223304spring1.controllers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.uniovi.sdi2223304spring1.entities.Mark;
@@ -57,8 +59,10 @@ public class ProfessorController {
     }
 
     @RequestMapping("/professor/list")
-    public String getList(Model model){
-        model.addAttribute("professorList", professorService.getProfessors());
+    public String getList(Pageable pageable, Model model){
+        Page<Professor> professors = professorService.getProfessors(pageable);
+        model.addAttribute("professorList", professors.getContent());
+        model.addAttribute("page", professors);
         return "professor/list";
     }
 

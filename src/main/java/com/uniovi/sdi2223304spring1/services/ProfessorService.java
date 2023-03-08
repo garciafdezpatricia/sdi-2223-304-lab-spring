@@ -4,6 +4,8 @@ import com.uniovi.sdi2223304spring1.entities.Professor;
 import com.uniovi.sdi2223304spring1.entities.User;
 import com.uniovi.sdi2223304spring1.repositories.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,9 +16,8 @@ public class ProfessorService {
     @Autowired
     private ProfessorRepository professorRepository;
 
-    public List<Professor> getProfessors() {
-        List<Professor> professor = new ArrayList<Professor>();
-        professorRepository.findAll().forEach(professor::add);
+    public Page<Professor> getProfessors(Pageable pageable) {
+        Page<Professor> professor = professorRepository.findAll(pageable);
         return professor;
     }
     public Professor getProfessor(String dni) {

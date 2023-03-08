@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 @Controller
 public class UsersController {
@@ -72,11 +73,14 @@ public class UsersController {
     }
 
     @RequestMapping("/user/list")
-    public String getListado(Model model, @RequestParam(value="", required = false) String searchText) {
+    public String getListado(Pageable pageable, Model model, @RequestParam(value="", required = false) String searchText) {
+        Page<User> users = new PageImpl<User>(new LinkedList<User>());
         if (searchText != null && !searchText.isEmpty())
-            model.addAttribute("usersList", usersService.searchUserByNameAndUsername(searchText));
+            users = usersService.searchUserByNameAndUsername(pageable, searchText);
         else
-            model.addAttribute("usersList", usersService.getUsers());
+            users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
         return "user/list";
     }
     @RequestMapping(value = "/user/add")
@@ -119,8 +123,10 @@ public class UsersController {
     }
 
     @RequestMapping("/user/list/update")
-    public String updateList(Model model){
-        model.addAttribute("usersList", usersService.getUsers());
+    public String updateList(Pageable pageable, Model model){
+        Page<User> users = usersService.getUsers(pageable);
+        model.addAttribute("usersList", users.getContent());
+        model.addAttribute("page", users);
         return "user/list::tableUsers"; // solo retorna el fragmento tableMarks
     }
 }
