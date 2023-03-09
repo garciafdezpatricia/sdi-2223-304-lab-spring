@@ -313,7 +313,7 @@ class Sdi2223304Spring1ApplicationTests {
         List<WebElement> elements = PO_View.checkElementBy(driver, "free", "//li[contains(@id, 'marks-menu')]/a");
         elements.get(0).click();
 
-        // necesario para añadir la nota
+        // necesario para añadir la nota a la bd
         //Esperamos a que aparezca la opción de añadir nota: //a[contains(@href, 'mark/add')]
         elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'mark/add')]");
         //Pinchamos en agregar Nota.
