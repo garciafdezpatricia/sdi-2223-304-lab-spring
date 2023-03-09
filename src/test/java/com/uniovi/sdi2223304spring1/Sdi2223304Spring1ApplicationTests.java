@@ -1,14 +1,11 @@
 package com.uniovi.sdi2223304spring1;
 
-import com.uniovi.sdi2223304spring1.pageobjects.PO_HomeView;
-import com.uniovi.sdi2223304spring1.pageobjects.PO_Properties;
-import com.uniovi.sdi2223304spring1.pageobjects.PO_View;
+import com.uniovi.sdi2223304spring1.pageobjects.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.uniovi.sdi2223304spring1.pageobjects.PO_SignUpView;
 
 import java.util.List;
 
@@ -164,7 +161,68 @@ class Sdi2223304Spring1ApplicationTests {
         Assertions.assertEquals(checkText , result.get(0).getText());
     }
 
+    //PR07.Identificación válida con usuario de ROL usuario (99999990A/123456).
+    @Test
+    @Order(10)
+    public void PR07(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123456");
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
 
+    // PR08: Identificación válida con usuario de ROL profesor (99999993D/123456)
+    @Test
+    @Order(11)
+    public void PR08(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999993D", "123456");
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    // PR09: Identificación válida con usuario de ROL Administrador (99999988F/123456)
+    @Test
+    @Order(12)
+    public void PR09(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999988F", "123456");
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    // PR10: Identificación inválida con usuario de ROL alumno (99999990A/123456)
+    @Test
+    @Order(13)
+    public void PR10(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123455");
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "login.message",
+                PO_Properties.getSPANISH() );
+        //Comprobamos el error de Nombre corto de nombre corto .
+        String checkText = PO_HomeView.getP().getString("login.message",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
+    }
+
+    // PR11: Identificación válida y desconexión con usuario de ROL usuario (99999990A/123456)
+    @Test
+    @Order(14)
+    public void PR11(){
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123455");
+        PO_LoginView.clickOption(driver, "logout", "class", "nav-link");
+
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "login.message",
+                PO_Properties.getSPANISH() );
+        String checkText = PO_HomeView.getP().getString("login.message",
+                PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
+
+    }
 
     @Test
     void contextLoads() {
